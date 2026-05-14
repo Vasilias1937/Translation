@@ -12,7 +12,8 @@ target_include_directories(lexer PRIVATE
   ${CMAKE_SOURCE_DIR}/../Lab1
 )
 if(MSVC)
-  target_compile_options(lexer PRIVATE /W3)
+  # /utf-8: литералы в исходниках как UTF-8 (совпадает с CP_UTF8 в консоли после initConsoleUtf8)
+  target_compile_options(lexer PRIVATE /W3 /utf-8)
 else()
   target_compile_options(lexer PRIVATE -Wall -Wextra)
 endif()

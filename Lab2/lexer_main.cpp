@@ -8,8 +8,21 @@
 #include <iterator>
 #include <string>
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 // Lab1: очистка исходного текста
 #include "source_cleaner.hpp"  // ../Lab1 при компиляции: -I../Lab1
+
+#ifdef _WIN32
+// Консоль Windows по умолчанию не UTF-8; без этого кириллица в заголовках/сообщениях «ломается».
+static void initConsoleUtf8() {
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+}
+#endif
 
 static std::string escq(const std::string& s) {
   std::string o;
@@ -26,6 +39,9 @@ static std::string readAll(const char* path, bool& ok) {
 }
 
 int main(int argc, char* argv[]) {
+#ifdef _WIN32
+  initConsoleUtf8();
+#endif
   if (argc < 2) {
     std::cerr << "Использование: " << (argc > 0 ? argv[0] : "lexer")
               << " <исходник.cpp> [--raw]\n  По умолчанию сначала применяется очистка Lab1. "
